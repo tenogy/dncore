@@ -1,0 +1,21 @@
+version: "3.4"
+
+services:
+  src:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    image: ${DOCKER_REGISTRY}consoleapp
+    volumes:
+      - console-app:/app
+  console:
+    image: mcr.microsoft.com/dotnet/core/runtime:3.0.0-preview4-alpine3.9
+    container_name: console_test
+    volumes:
+      - console-app:/app
+    working_dir: /app
+    command: "dotnet consoleApp.dll"
+    depends_on:
+      - "src"
+volumes:
+  console-app:
